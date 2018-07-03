@@ -18,7 +18,25 @@ from sales
 group by store_id
 '''
 
+print('----------------')
 result = db.query(sql)
 for row in result:
     print('store = %s, total_sales = %s' % (row['store_id'], row['total_sales']))
 
+
+sql = '''
+select store_id,  
+            strftime('%Y%m', week_sold) as month,  
+            product_code, 
+            avg(price * num_sold) as average_monthly_revenue
+from sales
+group by store_id, month, product_code
+order by store_id, product_code, month
+'''
+
+print('----------------')
+result = db.query(sql)
+for row in result:
+    print('store = %s, month = %s, product = %s, average_monthly_rev = %s' % (
+        row['store_id'], row['month'], row['product_code'], row['average_monthly_revenue'])
+    )
